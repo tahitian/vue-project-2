@@ -20,6 +20,7 @@ import account_pwd_reset from '@/components/account_setting/account_pwd_reset.vu
 
 import message from '@/components/message/message_nav.vue'
 import message_list from '@/components/message/message_list.vue'
+import message_setting from '@/components/message/message_setting.vue'
 
 Vue.use(Router)
 
@@ -137,6 +138,11 @@ export default new Router({
               path: 'list',
               name: 'message_list',
               component: message_list
+            },
+            {
+              path: 'setting',
+              name: 'message_setting',
+              component: message_setting
             }
 
           ]

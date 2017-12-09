@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <div class="w6">
 
-    <!-- <top /> -->
-
-    <div id="message-nav">
+    <div id="message_nav">
       <ul>
-        <li><router-link :to="{ name:'message_list' }" :class="{ checked: check_path('message_list') }">查看消息</router-link></li>
+        <li><router-link :to="{ name:'message_list' }" :class="{ checked: check_path('message_list') }">查看信息</router-link></li>
         <li><router-link :to="{ name:'message_setting' }" :class="{ checked: check_path('message_setting') }">消息设置</router-link></li>
       </ul>
     </div>
@@ -19,7 +17,7 @@
 import {ajaxCallPromise} from '@/public/index'
 
 export default {
-  name: 'account_nav',
+  name: 'message_nav',
   mounted () {
   },
   data () {
@@ -47,20 +45,20 @@ export default {
   padding: 0;
   border: 0;
 }
-#message-nav {
+#message_nav {
   font-size: 0;
   height: 50px;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
 }
-#message-nav>ul {
+#message_nav>ul {
   list-style-type: none;
   margin-left: 60px;
 } 
-#message-nav>ul>li {
+#message_nav>ul>li {
   display: inline-block;
 }
-#message-nav>ul>li>a {
+#message_nav>ul>li>a {
   display: inline-block;
   width: 114px;
   height: 50px;
@@ -74,7 +72,7 @@ export default {
   color: #000;
   text-decoration: none;
 }
-#message-nav>ul>li>a.checked {
+#message_nav>ul>li>a.checked {
   border-bottom: 4px solid #3a72bf;
 }
 .w6 {
