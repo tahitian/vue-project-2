@@ -18,6 +18,9 @@ import account_basic_info from '@/components/account_setting/account_basic_info.
 import account_qual_info from '@/components/account_setting/account_qual_info.vue'
 import account_pwd_reset from '@/components/account_setting/account_pwd_reset.vue'
 
+import message from '@/components/message/message_nav.vue'
+import message_list from '@/components/message/message_list.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -120,6 +123,20 @@ export default new Router({
               path: 'pwd-reset',
               name: 'account_pwd_reset',
               component: account_pwd_reset
+            }
+
+          ]
+        },
+        {
+          path: 'message',
+          name: 'message',
+          component: message,
+          redirect: { name: 'message_list' },
+          children: [
+            {
+              path: 'list',
+              name: 'message_list',
+              component: message_list
             }
 
           ]
