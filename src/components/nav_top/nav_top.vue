@@ -2,14 +2,14 @@
   <div id="top" class="clearfix">
 
     <a href="#">
-      <img class="vertical-center mr-12 ml-17 cp"src="../assets/icons/home/logo.png" /> 
+      <img class="vertical-center mr-12 ml-17 cp"src="../../assets/icons/home/logo.png" /> 
     </a>
 
     <div class="vertical-line vertical-center mr-7"></div>
 
-    <div id="menu-wrapper" class="vertical-center cp top-unit">
+    <div id="menu-wrapper" class="vertical-center cp top-unit" @click="checkMenu">
       <a href="#">
-        <img class="vertical-center w-24" src="../assets/icons/home/menu.png" /> 
+        <img class="vertical-center w-24" src="../../assets/icons/home/menu.png" /> 
       </a>
       <span id="present-module" class="vertical-center w6">{{present_module}}</span>
     </div>
@@ -18,18 +18,18 @@
     <div id="top-fr-wrapper" class="fr wrapper-50">
 
       <div class="wrapper-36 vertical-center mr-7 cp top-unit">
-        <img src="../assets/icons/home/portrait.png" class="vertical-center">
+        <img src="../../assets/icons/home/portrait.png" class="vertical-center">
         <span class="w3 white px-14 vertical-center ml-8">{{account_name}}</span>
-        <img src="../assets/icons/home/drop_down.png" class="vertical-center ml-8">
+        <img src="../../assets/icons/home/drop_down.png" class="vertical-center ml-8">
       </div>
 
       <div class="vertical-line vertical-center mr-12"></div>
 
       <a href="#" class="vertical-center">
-        <img src="../assets/icons/home/message.png" class="w-24 mr-12 cp">
+        <img src="../../assets/icons/home/message.png" class="w-24 mr-12 cp" @click="checkMessage">
       </a>
       <a href="#" class="vertical-center">
-        <img src="../assets/icons/home/setting.png" class="w-24 mr-12 cp">
+        <img src="../../assets/icons/home/setting.png" class="w-24 mr-12 cp">
       </a>
 
       <div class="vertical-line vertical-center mr-7"></div>
@@ -37,28 +37,53 @@
       <div class="wrapper-30 vertical-center mr-15 cp top-unit">
         <span class="w3 white px-14 vertical-center mr-7">获取帮助</span>
         <a href="#" class="vertical-center">
-          <img src="../assets/icons/home/help.png" class="w-24">
+          <img src="../../assets/icons/home/help.png" class="w-24">
         </a>
       </div>
       
     </div>
+
+    <message-drop-win :show-message="show_message"></message-drop-win>
+    <global-menu :show-menu="show_menu"></global-menu>
+
   </div>
 </template>
 
 <script type="text/javascript">
+import message_drop_win from '@/components/nav_top/message_drop_win'
+import global_menu from '@/components/nav_top/global_menu'
+
 export default {
   name: 'top',
   data () {
     return {
       present_module: '账户设置',
-      account_name: 'Zhou Wen'
+      account_name: 'Zhou Wen',
+
+      show_message: false,
+      show_menu: false
     }
+  },
+  methods: {
+    checkMessage() {
+      this.show_message = this.show_message ? false : true
+    },
+    checkMenu() {
+      this.show_menu = this.show_menu ? false : true
+    }
+  },
+  components: {
+    'message-drop-win': message_drop_win,
+    'global-menu': global_menu
   }
 }
 </script>
 
-<style type="text/css">
+<style>
 * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 0;
   margin: 0;
   border: 0;
@@ -75,6 +100,7 @@ export default {
   overflow: auto;
   zoom: 1;
   position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
 }
@@ -170,4 +196,5 @@ export default {
   border-radius: 3px;
   padding: 0 5px;
 }
+
 </style>

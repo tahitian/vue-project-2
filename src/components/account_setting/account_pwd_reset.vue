@@ -1,5 +1,5 @@
 <template>
-  <div id="pwd_new-reset" calss="w6">
+  <div id="pwd-reset" calss="w6">
 
     <div id="title">
       <span>密码重置</span>
@@ -18,13 +18,13 @@
           <div class="label-container">
             <label for="pwd-present">当前密码</label>
           </div>
-          <input type="password" id="pwd_new-present" v-model="pwd_present" placeholder="请输入当前密码"></input>
+          <input type="password" id="pwd-present" v-model="pwd_present" placeholder="请输入当前密码"></input>
         </div>
         <div class="input-unit">
           <div class="label-container">
             <label for="pwd-new">新密码</label>
           </div>
-          <input type="password" id="pwd_new-new" v-model="pwd_new" placeholder="密码需要包含大小写字母、数字，长度6-32位"></input>
+          <input type="password" id="pwd-new" v-model="pwd_new" placeholder="密码需要包含大小写字母、数字，长度6-32位"></input>
         </div>
         <div class="input-unit">
           <div class="label-container">
@@ -114,26 +114,26 @@ export default {
 </script>
 
 <style type="text/css">
-#pwd_new-reset {
+#pwd-reset {
   background-color: white;
   margin: 20px 70px 0 70px;
   height: 400px;
   position: relative;
 }
 
-#pwd_new-reset>#title {
+#pwd-reset>#title {
   background-color: #838b97;
   padding-left: 30px;
   height: 50px;
   line-height: 50px;
   font-size: 0;
 }
-#pwd_new-reset>#title>span {
+#pwd-reset>#title>span {
   font-size: 16px;
   color: #fff;
   vertical-align: middle;
 }
-#pwd_new-reset>#title>div {
+#pwd-reset>#title>div {
   display: inline-block;
   height: 34px;
   line-height: 34px;
@@ -144,22 +144,22 @@ export default {
 
   font-size: 0px;
 }
-#pwd_new-reset>#title>div.yellow-style {
+#pwd-reset>#title>div.yellow-style {
   background-color: #f4ecd1;
   color: #91792a;
 }
-#pwd_new-reset>#title>div>* {
+#pwd-reset>#title>div>* {
   vertical-align: middle;
   font-size: 14px;
   display: inline-block;
 }
-#pwd_new-reset>#title>div>img {
+#pwd-reset>#title>div>img {
   width: 14px;
   margin-left: 10px;
   cursor: pointer;
 }
 
-#pwd_new-reset div.horizon {
+#pwd-reset div.horizon {
   background-color: #ccc;
   position: absolute;
   bottom: 82px;
@@ -167,30 +167,30 @@ export default {
   height: 1px;
 }
 
-#pwd_new-reset .input-set {
+#pwd-reset .input-set {
   margin-top: 50px;
   position: absolute;
   left: 48%;
   transform: translateX(-50%);
   line-height: 50px;
 }
-#pwd_new-reset .input-unit {
+#pwd-reset .input-unit {
   height: 50px;
 }
-#pwd_new-reset .input-unit>* {
+#pwd-reset .input-unit>* {
   vertical-align: middle;
 }
-#pwd_new-reset .input-unit .label-container {
+#pwd-reset .input-unit .label-container {
   height: 52px;
   display: inline-block;
   width: 100px;
   margin-right: 16px;
 }
-#pwd_new-reset label {
+#pwd-reset label {
   float: right;
   font-size: 14px;
 }
-#pwd_new-reset input[type="password"] {
+#pwd-reset input[type="password"] {
   display: inline-block;
   width: 300px;
   height: 30px;
@@ -201,7 +201,7 @@ export default {
   color: #000;
 }
 
-#pwd_new-reset input[type="button"] {
+#pwd-reset input[type="button"] {
   width: 100px;
   height: 40px;
   font-size: 16px;

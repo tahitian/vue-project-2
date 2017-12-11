@@ -114,6 +114,14 @@ export default {
 </script>
 
 <style type="text/css">
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
 #message-list {
   background-color: white;
   margin: 80px 18% 0 18%;

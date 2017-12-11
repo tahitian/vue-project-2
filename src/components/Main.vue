@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-import top from '@/components/nav_top.vue'
+import top from '@/components/nav_top/nav_top.vue'
 export default {
     name: 'app',
     mounted(){

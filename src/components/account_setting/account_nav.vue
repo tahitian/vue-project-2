@@ -1,8 +1,6 @@
 <template>
   <div>
 
-    <!-- <top /> -->
-
     <div id="account-nav">
       <ul>
         <li><router-link :to="{ name:'account_basic_info' }" :class="{ checked: check_path('account_basic_info') }">基本信息</router-link></li>
@@ -16,7 +14,6 @@
   </div>
 </template>
 <script>
-import top from '@/components/nav_top.vue'
 import {ajaxCallPromise} from '@/public/index'
 
 export default {

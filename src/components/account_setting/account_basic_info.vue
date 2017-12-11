@@ -225,6 +225,18 @@ export default {
 </script>
 
 <style type="text/css">
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.w6 {
+  font-family: "HiraginoSansGB-W6";
+}
+
 #basic-info {
   background-color: white;
   margin: 20px 70px 0 70px;
