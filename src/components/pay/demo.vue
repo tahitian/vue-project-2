@@ -1,4 +1,18 @@
-<template>
+<!-- <template>
+   <div>
+    hello world!
+    </div>
+</template>
+
+<script type="text/javascript">
+console.log('1111111111111111')
+export default {
+    name: 'demo'
+} 
+</script>
+ -->
+
+ <template>
   <div class="w6">
 
     <div id="message_nav">

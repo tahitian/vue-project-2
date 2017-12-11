@@ -2,22 +2,55 @@
   <div id="message-list" calss="w6">
 
     <div id="title">
-      <span>查看消息</span>
-      <div v-if="show_audit" class="yellow-style">
-        <span>更改密码后请牢记并妥善保存密码！</span>
-        <img src="../../assets/icons/home/close.png" @click="hideAudit" />
+      <div class="wrapper">
+        <span>查看消息</span>
+        <DatePicker type="daterange" class="date-picker" v-model="validity_period"></DatePicker>
+        <select v-model="message_type_wanted">
+          <option v-for="m_type in m_types" :value="m_type.code">{{m_type.name}}</option>
+        </select>
       </div>
     </div>
 
-    <div id="message-body">
+    <div id="message-win">
+
       <div id="tool-bar">
-        <Checkbox v-model="select_all">
-        </Checkbox>
+        <Checkbox v-model="select_all"></Checkbox>
         <span>全选</span>
         <input type="button" value="设为已读"></input>
         <input type="button" value="设为未读"></input>
       </div>
+
+      <div class="message-item">
+
+        <div class="head-line">
+          <Checkbox class="select-this" v-model="select_this"></Checkbox>
+
+          <div class="read-message" @click="openBody">
+            <img v-if="read" src="../../assets/icons/message/read.png" class="message-icon" />
+            <img v-if="!read" src="../../assets/icons/message/unread.png" class="message-icon" />
+            <div class="message-title">
+              {{message_title}}
+            </div>
+          </div>
+
+          <div class="message-type">
+            {{message_type}}
+          </div>
+
+          <div class="time">
+            {{time}}
+          </div>
+
+        </div>
+
+        <div v-if="show_body" class="message-body">
+          {{message_body}}
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 </template>
 
@@ -29,17 +62,30 @@ import {SERVERCONF,getErrMsg,SYSTEM} from '@/public/constants'
 import {hex_sha1} from '@/public/sha1'
 
 export default {
-  name: 'account_qual_info',
+  name: 'message_list',
   mounted () {
   },
   data () {
     return {
-      show_audit: false,
-      pwd_present: '',
-      pwd_new: '',
-      pwd_repeat: '',
+      select_all: true,
+      select_this: true,
 
-      select_all: true
+      m_types: {
+        ALL:  {code:0,  name: '所有消息'},
+        SYSTEM:  {code:1,  name: '系统消息'},
+        AUDIT:  {code:2,   name: '审核消息'},
+        ACCOUNT:  {code:3,  name: '账户消息'},
+        FINANCIAL:  {code:4,  name: '财务消息'},
+      },
+      message_type_wanted: 0,
+      validity_period: ['', ''],
+
+      read: true,
+      message_title: '账户余额不足',
+      time: '2017-12-12 00:00:00',
+      message_type: '财务消息',
+      show_body: true,
+      message_body: '余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500'
     }
   },
   watch: {
@@ -59,39 +105,9 @@ export default {
         closable: true
       });
     },
-    hideAudit(){
-      this.show_audit = false;
-    },
-    submitQualInfo(){
-      if(this.pwd_present == "" || this.pwd_new == "" || this.pwd_repeat == ""){
-          this.showErr("密码不能为空！");
-      }else if(this.pwd_new != this.pwd_repeat){
-          this.showErr("两次密码不一致！");
-      }else if(!isPassword(this.pwd_new)){
-          this.showErr("密码格式错误！必须包含数字，大小写字母，长度6-16位");
-      }else{
-          var passwords = {
-            passwords: hex_sha1(this.pwd_new + SYSTEM.SALT),
-            oldpassword: hex_sha1(this.pwd_present + SYSTEM.SALT)
-          }
-
-          var param = {
-              // sinterface : SERVERCONF.USERS.RESETPASS,
-              sinterface: {
-                method: 'POST',
-                path: '/v3/password/reset'
-              },
-              data : passwords
-          };
-
-          let _self = this;
-      
-          ajaxCallPromise(param).then( res => {
-            _self.showInfo('密码修改成功！');
-          }).catch( err => {
-            _self.showErr(getErrMsg(err));
-          });
-      }
+    openBody(){
+      this.show_body = this.show_body ? false : true
+      this.read = this.read ? false : true
     }
   }
 }
@@ -100,76 +116,127 @@ export default {
 <style type="text/css">
 #message-list {
   background-color: white;
-  margin: 20px 16% 0 16%;
+  margin: 80px 18% 0 18%;
   height: 400px;
-  position: relative;
+  /*position: relative;*/
 }
 
 #message-list>#title {
   background-color: #838b97;
-  padding-left: 30px;
+  padding: 0 30px;
   height: 50px;
   line-height: 50px;
   font-size: 0;
 }
-#message-list>#title>span {
+#message-list>#title>* {
+  vertical-align: middle;
+  color: #4b4f56;
+  display: inline-block;
+}
+#message-list>#title>div.wrapper {
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  /*padding-right: 30px;*/
+}
+#message-list>#title>div.wrapper>span {
   font-size: 16px;
   color: #fff;
-  vertical-align: middle;
+}
+#message-list>#title select {
+  font-size: 14px;
+  background-color: #f3f4f4;
+  border-radius: 3px;
+  height: 30px;
+  /*line-height: 48px;*/
+  padding: 0 6px;
+  border: 1px solid #ccc;
+  float: right;
+  margin-right: 14px;
+}
+#message-list .date-picker {
+  color: #4b4f56;
+  font-size: 14px;
+  float: right;
+}
+#message-list .date-picker input {
+  display: inline-block;
+  border: 1px solid #ccc;
+  height: 30px;
+  font-size: 14px;
+  background-color: #f3f4f4;
+  /*color: #000;*/
+}
+
+#message-win>div {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  padding: 0 30px;
 }
 
 #tool-bar {
-  font-size: 0;
+  font-size: 0px;
   height: 44px;
-  line-height: 44px;
+  line-height: 42px;
+  /*padding-left: 30px;*/
 }
-
 #tool-bar>* {
   display: inline-block;
   vertical-align: middle;
   font-size: 14px;
 }
-
 #tool-bar>input[type="button"] {
   background-color: #f3f4f4;
   color: #838b97;
   border-radius: 3px;
   height: 28px;
-  line-height: 28px;
+  line-height: 26px;
   padding: 0 8px;
+  border: 1px solid #ccc;
+  margin-left: 15px;
 }
 
-#message-body>div {
-  font-size: 14px;
-  width: 100%;
-  border-bottom: 1px solid #ccc;
+#message-list #message-win div.message-item {
+  /*padding-bottom: 16px;*/
 }
 
-#message-list>div>* {
+#message-list #message-win div.head-line {
+  font-size: 0;
+  height: 50px;
+  line-height: 50px;
+}
+#message-list #message-win div.head-line>* {
   display: inline-block;
-  position: absolute;
-  top: 50%;
-  transform: translateY(50%);
+  vertical-align: middle;
+  font-size: 14px;
+}
+#message-list #message-win div.head-line>div.read-message {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0;
+  height: 22px;
+  line-height: 22px;
+  cursor: pointer;
+}
+#message-list #message-win div.head-line>div.read-message>* {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+}
+#message-list #message-win div.head-line>div.read-message>div.message-title {
+  padding-left: 28px
+}
+#message-list #message-win div.head-line>div.time, div.message-type {
+  float: right;
+  padding-left: 26px;
 }
 
-#message-list div.horizon {
-  background-color: #ccc;
-  position: absolute;
-  bottom: 82px;
-  width: 100%;
-  height: 1px;
+#message-list #message-win div.message-body {
+  font-size: 14px;
+  color: #838b97;
+  padding-left: 71px;
+  padding-bottom: 16px;
 }
 
-/*#message-list input[type="button"] {
-  width: 100px;
-  height: 40px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #3a72bf;
-  border-radius: 3px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-}*/
 
 </style>

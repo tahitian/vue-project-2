@@ -13,14 +13,16 @@ import Overall from '@/components/account/overview/Overall'
 import AccountMain from '@/components/account/AccountMain'
 import ac_adplan from '@/Components/account/adplan/AdPlan'
 
+import demo from '@/components/demo'
+
 import account_setting from '@/components/account_setting/account_nav.vue'
 import account_basic_info from '@/components/account_setting/account_basic_info.vue'
 import account_qual_info from '@/components/account_setting/account_qual_info.vue'
 import account_pwd_reset from '@/components/account_setting/account_pwd_reset.vue'
 
-import message from '@/components/message/message_nav.vue'
+// import message from '@/components/message/message_nav.vue'
 import message_list from '@/components/message/message_list.vue'
-import message_setting from '@/components/message/message_setting.vue'
+// import message_setting from '@/components/message/message_setting.vue'
 
 Vue.use(Router)
 
@@ -44,6 +46,11 @@ export default new Router({
       name: 'main',
       component: Main,
       children:[
+        {
+          path: 'demo',
+          name: 'demo',
+          component: demo
+        },
         {
           path: 'finance',
           name: 'finance',
@@ -129,23 +136,9 @@ export default new Router({
           ]
         },
         {
-          path: 'message',
-          name: 'message',
-          component: message,
-          redirect: { name: 'message_list' },
-          children: [
-            {
-              path: 'list',
-              name: 'message_list',
-              component: message_list
-            },
-            {
-              path: 'setting',
-              name: 'message_setting',
-              component: message_setting
-            }
-
-          ]
+          path: 'message-list',
+          name: 'message_list',
+          component: message_list
         }
 
 
