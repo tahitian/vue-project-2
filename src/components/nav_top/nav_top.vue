@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

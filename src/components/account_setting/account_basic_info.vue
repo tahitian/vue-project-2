@@ -64,6 +64,20 @@
           <div class="label-container">
             <label for="advertiser-name">公司营业执照</label>
           </div>
+          <Upload
+              :before-upload="handleUpload"
+              :on-success="onSuccess"
+              ref="upload"
+              name="upload-file"
+              action="/v3/settings/account/license"
+              >
+              <Button type="ghost" icon="ios-cloud-upload-outline">选择文件</Button>
+          </Upload>
+          <div v-if="file !== null">
+            Upload file: {{ file.name }} 
+            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? '上传中' : '点击上传' }}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -147,6 +161,8 @@ export default {
         contacts_mobile: '',
         contacts_email: ''
       },
+      file: null,
+      loadingStatus: false
     }
   },
   watch: {
@@ -163,7 +179,7 @@ export default {
     getBasicInfo(){
       let param = {
         sinterface: {
-          method: 'POST',
+          method: 'GET',
           path: '/v3/settings/account/info/view'
         },
         data: {}
@@ -219,7 +235,23 @@ export default {
             closable:true
         });        
       });
+    },
+    handleUpload (file) {
+      this.file = file;
+      return false;
+    },
+    upload () {
+      this.loadingStatus = true;
+      this.$refs.upload.post(this.file);
+    },
+    onSuccess (res) {
+      console.log(res);
+
+      this.file = null;
+      this.loadingStatus = false;
+      this.$Message.success('Success')
     }
+
   }
 }
 </script>
@@ -309,6 +341,8 @@ export default {
 }
 #basic-info .input-unit>* {
   vertical-align: middle;
+  display: inline-block;
+  font-size: 14px;
 }
 #basic-info .input-unit .label-container {
   height: 52px;
@@ -348,6 +382,22 @@ export default {
   font-size: 14px;
   /*color: #000;*/
 }
+#basic-info .ivu-upload  {
+  height: 52px;
+}
+#basic-info .ivu-upload button {
+  display: inline-block;
+  height: 30px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 3px;
+}
+/*#basic-info .date-picker input {
+  display: inline-block;
+  border: 1px solid #ccc;
+  height: 30px;
+  font-size: 14px;
+}*/
 
 #basic-info div.vertical-line {
   float: left;
