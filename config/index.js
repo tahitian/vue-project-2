@@ -13,14 +13,16 @@ module.exports = {
     proxyTable: {
          '/v1':{
             // target:'localhost:6188',
-            target:'http://172.16.1.221:6188/',
+            // target:'http://172.16.1.221:6188/',
+            target:'http://127.0.0.1:6188/',
             changeOrigin:true,
             pathRewrite: {
                 '^/v1':'/v1'
             }
         },
         '/v3':{
-            target: 'http://172.16.1.180:6188/',
+            // target: 'http://172.16.1.180:6188/',
+            target:'http://127.0.0.1:6188/',
             changeOrigin: true,
             pathRewrite: {
                 '^/v3': '/v3'
