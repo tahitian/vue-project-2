@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
