@@ -143,9 +143,6 @@ function ajaxCallPromise(param){
                 method: 'post',
                 url: path,
                 data: data,
-                headers: {
-                    'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryr8wY7IrtgLjJElPJ'
-                }
                 // responseType: responseType,
                 // transformRequest:[function(data){
                 //     return JSON.Parse(data);

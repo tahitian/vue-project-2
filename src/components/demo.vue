@@ -1,7 +1,6 @@
 <template>
 <div>
   <uploader :file-loaded.sync="file_loaded"></uploader>
-  <div>{{file_loaded}}</div>
 </div>
 </template>
 <script>

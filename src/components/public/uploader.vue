@@ -11,11 +11,11 @@
   <span v-if="file_to_load">{{file_to_load}}</span>
   <img v-if="file_to_load" src="../../assets/icons/home/close.png" @click="clearFile" class="close" />
 
-  <a v-if="fileLoaded && !file_to_load" @click="showImage">{{fileLoaded}}</a>
+  <a v-if="fileUrl && !file_to_load" @click="showImage">点击查看</a>
 
   <div class="cover" v-if="show_image" @click="showImage">
   </div>
-  <img src="../../assets/img/portrait.jpg" v-if="show_image" @click="showImage" class="view-image" />
+  <img :src="fileUrl" v-if="show_image" @click="showImage" class="view-image" />
 
 </div>
 </template>
@@ -28,13 +28,14 @@ export default {
   data () {
       return {
         file_to_load: null,
-        // fileLoaded: null,
+        // fileUrl: null,
         res_message: null,
-        show_image: false
+        show_image: false,
+        image_url: ''
       }
   },
   props: {
-    'fileLoaded': {
+    'fileUrl': {
       type: String,
       required: true,
       default: null
@@ -55,46 +56,33 @@ export default {
 
       oData.append("upload-file", document.getElementById('file-input').files[0]);
 
-      // this.fileLoaded = this.file_to_load;
-      this.$emit('update:fileLoaded', this.file_to_load);
-      document.getElementById('file-input').value = '';
-      this.file_to_load = null;
+      let param = {
+        sinterface: {
+          method: 'POST',
+          path: '/v3/settings/account/license'
+        },
+        data: oData
+      }
+      let _self = this;
+      ajaxCallPromise(param).then(res => {
+        _self.$emit('update:fileUrl', res.file);
+        // _self.image_url = res.url;
+        document.getElementById('file-input').value = '';
+        _self.file_to_load = null;
 
-      // var oReq = new XMLHttpRequest();
-      // oReq.open("POST", "http://172.16.1.180:6188/v3/settings/account/license", true);
-      // oReq.onload = function(oEvent) {
-      //   if (oReq.status == 200) {
-      //     this.res_message = "Uploaded!";
-      //   } else {
-      //     this.res_message = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
-      //   }
-      // };
-
-      // oReq.send(oData);
-
-      // let param = {
-      //   sinterface: {
-      //     method: 'POST',
-      //     path: '/v3/settings/account/license'
-      //   },
-      //   data: oData
-      // }
-      // let _self = this;
-      // ajaxCallPromise(param).then(res => {
-      //   _self.getBasicInfo();
-      //   _self.$Message.info({
-      //     content: '上传成功！',
-      //     duration: 2,
-      //     closable: true
-      //   })
-      // }).catch(err=> {
-      //   let msg = getErrMsg(err);
-      //   _self.$Message.error({
-      //       content: msg,
-      //       duration: 2,
-      //       closable:true
-      //   });        
-      // });
+        _self.$Message.info({
+          content: '上传成功！',
+          duration: 2,
+          closable: true
+        })
+      }).catch(err=> {
+        let msg = getErrMsg(err);
+        _self.$Message.error({
+            content: msg,
+            duration: 2,
+            closable:true
+        });        
+      });
     },
     clearFile(){
         this.file_to_load = null;
@@ -117,7 +105,7 @@ export default {
   border: 0;
 }
 #uploader {
-  color: #000;
+  color: #4b4f56;
   font-family: "HiraginoSansGB-W6";
   height: 30px;
 
@@ -182,6 +170,8 @@ export default {
   top: 0;
   left: 0;
   z-index: 2000;
+  border: 0;
+  border-radius: 0;
 }
 #uploader>img.view-image {
   position: fixed;

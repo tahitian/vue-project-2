@@ -65,6 +65,7 @@
           <div class="label-container">
             <label for="">行业资质</label>
           </div>
+          <uploader :file-url.sync="qual_info.qualification"></uploader>
         </div>
       </div>
       
@@ -78,6 +79,7 @@ import {ajaxCallPromise} from '@/public/index'
 import '@/public/tools'
 import {SERVERCONF,getErrMsg} from '@/public/constants'
 import {cate, shis} from '@/public/cate'
+import uploader from '@/components/public/uploader'
 
 export default {
   name: 'account_qual_info',
@@ -152,6 +154,13 @@ export default {
         // _self.cate_selected = '51';
         // _self.subcate_selected = '5102';
         _self.qual_info = res;
+        _self.qual_info.categories = 51;
+        _self.qual_info.subcategories = 5102;
+        // for( int i=1; i<_self.cates; i++ ){
+        //   if(cates[i].value == res.)
+        // }
+
+
 
         _self.validity_period = [_self.qual_info.valid_date_begin, _self.qual_info.valid_date_end];
 
@@ -179,6 +188,8 @@ export default {
     },
     submitQualInfo(){
       let data = this.qual_info;
+      data.categories -= 0;
+      data.subcategories -= 0;
 
       let param = {
         sinterface: {
@@ -204,6 +215,9 @@ export default {
         });        
       });
     }
+  },
+  components: {
+    uploader
   }
 }
 </script>
@@ -273,17 +287,16 @@ export default {
 #qual-info .input-set {
   margin-top: 30px;
   position: absolute;
-  /*background-color: green;*/
   left: 48%;
   transform: translateX(-50%);
   line-height: 50px;
 }
 #qual-info .input-unit {
   height: 50px;
-  /*width: 100%;*/
 }
 #qual-info .input-unit>* {
   vertical-align: middle;
+  display: inline-block;
 }
 #qual-info .input-unit .label-container {
   height: 52px;
@@ -336,6 +349,6 @@ export default {
 }
 
 #qual-info input, select {
-  color: #838b97;
+  color: #4b4f56;
 }
 </style>

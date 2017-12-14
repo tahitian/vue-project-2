@@ -64,20 +64,7 @@
           <div class="label-container">
             <label for="advertiser-name">公司营业执照</label>
           </div>
-          <Upload
-              :before-upload="handleUpload"
-              :on-success="onSuccess"
-              ref="upload"
-              name="upload-file"
-              action="/v3/settings/account/license"
-              >
-              <Button type="ghost" icon="ios-cloud-upload-outline">选择文件</Button>
-          </Upload>
-          <div v-if="file !== null">
-            Upload file: {{ file.name }} 
-            <Button type="text" @click="upload" :loading="loadingStatus">{{ loadingStatus ? '上传中' : '点击上传' }}
-            </Button>
-          </div>
+          <uploader :file-url.sync="basic_info.company_license"></uploader>
         </div>
       </div>
 
@@ -114,6 +101,7 @@
 import {ajaxCallPromise} from '@/public/index'
 import '@/public/tools'
 import {SERVERCONF,getErrMsg} from '@/public/constants'
+import uploader from '@/components/public/uploader'
 
 export default {
   name: 'account_basic_info',
@@ -161,7 +149,7 @@ export default {
         contacts_mobile: '',
         contacts_email: ''
       },
-      file: null,
+      file_loaded: 'koala.jpg',
       loadingStatus: false
     }
   },
@@ -235,23 +223,11 @@ export default {
             closable:true
         });        
       });
-    },
-    handleUpload (file) {
-      this.file = file;
-      return false;
-    },
-    upload () {
-      this.loadingStatus = true;
-      this.$refs.upload.post(this.file);
-    },
-    onSuccess (res) {
-      console.log(res);
-
-      this.file = null;
-      this.loadingStatus = false;
-      this.$Message.success('Success')
     }
 
+  },
+  components: {
+    uploader
   }
 }
 </script>
@@ -392,12 +368,6 @@ export default {
   font-size: 14px;
   border-radius: 3px;
 }
-/*#basic-info .date-picker input {
-  display: inline-block;
-  border: 1px solid #ccc;
-  height: 30px;
-  font-size: 14px;
-}*/
 
 #basic-info div.vertical-line {
   float: left;
@@ -421,7 +391,7 @@ export default {
 }
 
 #basic-info input, select {
-  color: #838b97;
+  color: #4b4f56;
 }
 
 </style>
