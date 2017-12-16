@@ -1,6 +1,8 @@
 <template>
 <div>
-  <uploader :file-loaded.sync="file_loaded"></uploader>
+  <span>中国</span>
+  <br />
+  <span>中国</span>
 </div>
 </template>
 <script>
@@ -35,6 +37,13 @@ export default {
   padding: 0;
   margin: 0;
   border: 0;
+}
+span {
+  background-color: green;
+  line-height: 100px;
+  font-size: 10px;
+  margin-top: 1000px;
+  margin-left: 100px;
 }
 </style>
 

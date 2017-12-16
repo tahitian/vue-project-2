@@ -102,6 +102,7 @@ import {ajaxCallPromise} from '@/public/index'
 import '@/public/tools'
 import {SERVERCONF,getErrMsg} from '@/public/constants'
 import uploader from '@/components/public/uploader'
+import { isPhone, isMobile, isUrl, isEmail } from '@/public/tools'
 
 export default {
   name: 'account_basic_info',
@@ -117,7 +118,7 @@ export default {
         '用户信息审核不通过'
       ],
       audit_message: '',
-      show_audit: true,
+      show_audit: false,
       audit_box_class: {},
       ls_type_set: [
         ['请选择', 0], 
@@ -139,7 +140,7 @@ export default {
         telephone: '',
         address: '',
 
-        qualification_type: '',
+        qualification_type: 0,
         license_number: '',
         company_license: '',
         license_valid_date_begin: '',
@@ -193,11 +194,38 @@ export default {
         } else if(res.user_audit_status == '审核失败'){
           _self.audit_message = _self.am_list[3];
           _self.audit_box_class = { 'red-style': true };
+        } else {
+          _self.show_audit = false;
         }
       })
     },
     submitBasicInfo(){
       let data = this.basic_info;
+
+      if( !isPhone(data.telephone) ){
+        this.$Message.error({
+          content: '请输入正确格式的公司电话！',
+          duration: 2,
+          closable:true
+        });
+        return;
+      }
+      else if( !isMobile(data.contacts_mobile) ){
+        this.$Message.error({
+          content: '请输入正确格式的联系人电话！',
+          duration: 2,
+          closable:true
+        }); 
+        return;
+      }
+      else if( !isEmail(data.contacts_email) ){
+        this.$Message.error({
+          content: '请输入正确格式的联系人邮箱！',
+          duration: 2,
+          closable:true
+        }); 
+        return;
+      }
 
       data.edit_user_name = data.user_name;
       let param = {

@@ -80,6 +80,7 @@ import '@/public/tools'
 import {SERVERCONF,getErrMsg} from '@/public/constants'
 import {cate, shis} from '@/public/cate'
 import uploader from '@/components/public/uploader'
+import {isUrl} from '@/public/tools'
 
 export default {
   name: 'account_qual_info',
@@ -90,7 +91,7 @@ export default {
     return {
       am_list: ['用户信息尚未编辑！为了不影响您正常投放广告，请及时编辑！', '用户信息审核中', '用户信息审核通过', '用户信息审核不通过'],
       audit_message: '',
-      show_audit: true,
+      show_audit: false,
       audit_box_class: {},
 
       qual_info: {
@@ -101,8 +102,8 @@ export default {
         site_url: '',
         valid_date_begin: '',
         valid_date_end: '',
-        categories: '',
-        subcategories: ''
+        categories: '0',
+        subcategories: '0'
       },
       validity_period: ['', ''],
       cates: cate,
@@ -110,7 +111,7 @@ export default {
       cate_selected: '0',
       cate_index: 0,
       subcate_selected: '0',
-      just_loaded: true
+      just_loaded: false
 
     }
   },
@@ -176,6 +177,8 @@ export default {
         } else if(res.audit_status == '审核失败'){
           _self.audit_message = _self.am_list[3];
           _self.audit_box_class = { 'red-style': true };
+        } else {
+          _self.show_audit = false;
         }
       }).catch(err=> {
         let msg = getErrMsg(err);
@@ -188,8 +191,18 @@ export default {
     },
     submitQualInfo(){
       let data = this.qual_info;
+      this.just_loaded = true;
       data.categories -= 0;
       data.subcategories -= 0;
+
+      if( !isUrl(data.site_url) ){
+        this.$Message.error({
+          content: '请输入正确格式的主站网址!',
+          duration: 2,
+          closable:true
+        }); 
+        return;
+      }
 
       let param = {
         sinterface: {

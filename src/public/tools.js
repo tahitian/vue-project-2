@@ -1,9 +1,12 @@
 'use strict';
 
+function isPhone(num) {
+    return /^0\d{2,3}-?\d{7,8}$/.test(num);// 座机号码
+}
+
 function isMobile(num) {
     return /^1[34578]\d{9}$/.test(num);// 手机号码
 }
-
 
 function isEmail(email){
     let re = /^[_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.){1,4}[a-z]{2,3}$/;
@@ -64,7 +67,7 @@ Date.prototype.format = function(format) {
     return format;
 }
 
-export { isMobile, isEmail, isMoney, isUrl, isPInt, isEmptyObject, isPassword };
+export { isPhone, isMobile, isEmail, isMoney, isUrl, isPInt, isEmptyObject, isPassword };
 
 
 

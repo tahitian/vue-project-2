@@ -2,7 +2,7 @@
   <div id="message-list" calss="w6">
 
     <div id="title">
-      <div class="wrapper">
+      <div class="title-wrapper">
         <span>查看消息</span>
         <DatePicker type="daterange" class="date-picker" v-model="validity_period"></DatePicker>
         <select v-model="message_type_wanted">
@@ -131,23 +131,23 @@ export default {
 
 #message-list>#title {
   background-color: #838b97;
-  padding: 0 30px;
   height: 50px;
   line-height: 50px;
   font-size: 0;
+  width: 100%;
 }
 #message-list>#title>* {
   vertical-align: middle;
   color: #4b4f56;
   display: inline-block;
 }
-#message-list>#title>div.wrapper {
+#message-list>#title>div.title-wrapper {
   height: 30px;
   line-height: 30px;
   width: 100%;
-  /*padding-right: 30px;*/
+  padding: 0 30px;
 }
-#message-list>#title>div.wrapper>span {
+#message-list>#title>div.title-wrapper>span {
   font-size: 16px;
   color: #fff;
 }
