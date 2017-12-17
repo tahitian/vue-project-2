@@ -197,7 +197,14 @@ export default {
         } else {
           _self.show_audit = false;
         }
-      })
+      }).catch(err=> {
+        let msg = getErrMsg(err);
+        _self.$Message.error({
+            content: msg,
+            duration: 2,
+            closable:true
+        });        
+      });
     },
     submitBasicInfo(){
       let data = this.basic_info;

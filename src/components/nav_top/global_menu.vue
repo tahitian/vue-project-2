@@ -1,5 +1,6 @@
 <template>
   <!-- new message window -->
+<div>
   <div id="global-menu" v-if="showMenu">
     <div class="arrow-shape as-1">
     </div>
@@ -48,6 +49,10 @@
     </div>
 
   </div>
+
+  <div id="menu-cover" v-if="showMenu" @click="hide_menu"></div>
+
+</div>
 </template>
 
 <script type="text/javascript">
@@ -63,6 +68,11 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    hide_menu(){
+      this.$emit('update:showMenu', false );
     }
   }
 }
@@ -83,6 +93,7 @@ export default {
   left: 60px;
   /*background-color: green;*/
   z-index: 2000;
+  cursor: pointer;
 }
 #global-menu * {
   z-index: 2000;
@@ -161,6 +172,16 @@ export default {
 #menu-box>.table-body li {
     line-height: 34px;
     color: #929598;
+}
+
+#menu-cover {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1999;
 }
 
 

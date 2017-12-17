@@ -43,8 +43,8 @@
       
     </div>
 
-    <message-drop-win :show-message="show_message"></message-drop-win>
-    <global-menu :show-menu="show_menu"></global-menu>
+    <message-drop-win :show-message.sync="show_message"></message-drop-win>
+    <global-menu :show-menu.sync="show_menu"></global-menu>
 
   </div>
 </template>

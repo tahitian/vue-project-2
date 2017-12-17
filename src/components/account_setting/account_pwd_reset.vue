@@ -113,7 +113,7 @@ export default {
 }
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
 #pwd-reset {
   background-color: white;
   margin: 20px 70px 0 70px;

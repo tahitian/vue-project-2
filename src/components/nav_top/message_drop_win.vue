@@ -1,5 +1,7 @@
 <template>
   <!-- new message window -->
+<div>
+
   <div id="unread-message-window" v-if="showMessage">
     <div class="arrow-shape as-1">
     </div>
@@ -38,6 +40,10 @@
       <span>查看所有消息</span>
     </div>
   </div>
+
+  <div id="message-cover" v-if="showMessage" @click="hide_message"></div>
+
+</div>
 </template>
 
 <script type="text/javascript">
@@ -55,6 +61,11 @@ export default {
       // show_message: true,
       message_type: '系统消息',
       message_time: '2017-12-12 00:00:00'
+    }
+  },
+  methods: {
+    hide_message(){
+      this.$emit('update:showMessage', false );
     }
   }
 }
@@ -213,4 +224,15 @@ export default {
   bottom: 10px;
   color: #3a72bf;
 }
+
+#message-cover {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1999;
+}
+
 </style>

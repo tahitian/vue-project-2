@@ -38,6 +38,18 @@ function isEmptyObject(obj){
     return true;
 }
 
+function cloneObj(obj) {  
+    var newObj = {};  
+    if (obj instanceof Array) {  
+        newObj = [];  
+    }  
+    for (var key in obj) {  
+        var val = obj[key];  
+        newObj[key] = typeof val === 'object' ? cloneObj(val): val;  
+    }  
+    return newObj;  
+}; 
+
 function isPassword(pass) {
     var re = /^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,16}$/;
     return re.test(pass);
@@ -67,7 +79,7 @@ Date.prototype.format = function(format) {
     return format;
 }
 
-export { isPhone, isMobile, isEmail, isMoney, isUrl, isPInt, isEmptyObject, isPassword };
+export { isPhone, isMobile, isEmail, isMoney, isUrl, isPInt, isEmptyObject, isPassword, cloneObj };
 
 
 
