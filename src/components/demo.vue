@@ -14,17 +14,21 @@
     <div id="message-win">
 
       <div id="tool-bar">
-        <Checkbox v-model="select_all"></Checkbox>
+        <Checkbox v-model="select_all" @on-change="selectAllChange"></Checkbox>
         <span>全选</span>
-        <input type="button" value="设为已读" @click="markReadTogether"></input>
+        <input type="button" value="设为已读" @click="markReadTogether" :disabled="mark_read_disabled" :class="mark_style"></input>
         <!-- <input type="button" value="设为未读"></input> -->
+      </div>
+
+      <div v-if="total==0" class="replace">
+        <span>暂无消息！</span>
       </div>
 
       <ul>
         <li class="message-item" v-for=" msg in msg_list">
 
           <div class="head-line">
-            <Checkbox class="select-this" v-model="msg.selected"></Checkbox>
+            <Checkbox class="select-this" v-model="msg.selected" @on-change="selectChange"></Checkbox>
 
             <div class="read-message" @click="openContent(msg.msg_id)">
               <img v-if="msg.notify_status=='已读'" src="../assets/icons/message/read.png" class="message-icon" />
@@ -53,6 +57,8 @@
 
     </div>
 
+    <page id="turn-page" v-on:on-change="turnPage" :page-size="request_param.count" :total="total" v-if="total!=0" show-elevator></page>
+
   </div>
 </template>
 
@@ -69,9 +75,13 @@ export default {
   },
   data () {
     return {
-      a: [1],
-      select_all: true,
-      select_this: true,
+      total: 0,
+      mark_read_disabled: true,
+      selected_num: 0,
+      select_all: false,
+      mark_style: {
+        'mark-disabled': true
+      },
 
       msg_cates: {
         ALL:  {code:0,  name: '所有消息'},
@@ -92,69 +102,57 @@ export default {
         FINANCIALBALANCE3DAY: {code: 3003, name: '账户余额不足3日消耗预警'},
         FINANCIALRECHARGEDONE: {code: 3004, name: '资金到账提醒'}
       },
-      validity_period: ['', ''],
+      validity_period: [null, null],
       request_param: {
         index: 0,
-        count: 20,
-        start_time: '',
-        end_time: '',
+        count: 10,
+        start_time: null,
+        end_time: null,
         categories: '所有消息'
       },
       msg_list: [
         {
-          msg_id: '3a54490803cfa394390fe75558107553',
+          msg_id: '',
           categories: 0,
           subcategories: 0,
-          title: 'aaaaaa',
-          content: 'aaaaaaaaaa',
-          notify_status: '未读',
-          create_time: '111111',
-          selected: false,
-          show_content: false
-        },
-        {
-          msg_id: '3a54490803cfa394390fe75558107553',
-          categories: 0,
-          subcategories: 0,
-          title: 'aaaaaa',
-          content: 'aaaaaaaaaa',
-          notify_status: '未读',
-          create_time: '111111',
+          title: '',
+          content: '',
+          notify_status: '',
+          create_time: '',
           selected: false,
           show_content: false
         }
-      ],
-      // msg_list: [
-      //   {
-      //     msg_id: '',
-      //     categories: 0,
-      //     subcategories: 0,
-      //     title: '',
-      //     content: '',
-      //     notify_status: '',
-      //     create_time: '',
-      //     selected: false,
-      //     show_content: false
-      //   }
-      // ],
-
-      read: true,
-      message_title: '账户余额不足',
-      time: '2017-12-12 00:00:00',
-      message_type: '财务消息',
-      show_body: true,
-      message_body: '余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500余额少于500'
+      ]
     }
   },
   watch: {
     validity_period: function(val){
-      if(typeof(val[0]) != 'object') return;
-      this.request_param.start_time = val[0].format('yyyy-MM-dd hh:mm:ss');
-      this.request_param.end_time = val[1].format('yyyy-MM-dd hh:mm:ss');
+      if(val[0]){
+        this.request_param.start_time = val[0].format('yyyy-MM-dd hh:mm:ss');
+        this.request_param.end_time = val[1].format('yyyy-MM-dd hh:mm:ss');
+      }
       this.getMessage();
     },
     'request_param.categories': function(val){
       this.getMessage();
+    },
+    selected_num: function(val){
+      if(val > 0) {
+        this.mark_read_disabled = false;
+        this.mark_style = {
+          'mark-enable': true
+        }
+        if(this.selected_num == this.msg_list.length)
+          this.select_all = true;
+        else this.select_all = false;
+      }
+      else {
+        this.mark_read_disabled = true;
+        this.mark_style = {
+          'mark-disabled': true
+        }
+        this.select_all = false;
+      }
     }
   },
   methods: {
@@ -186,6 +184,25 @@ export default {
         }
       }
     },
+    selectChange(val){
+      if(val) this.selected_num++;
+      else this.selected_num--;
+    },
+    selectAllChange(val){
+      var msgs = this.msg_list;
+      if(val) {
+        this.selected_num = msgs.length;
+        for(let i in msgs){
+          msgs[i].selected = true;
+        }
+      }
+      else {
+        this.selected_num = 0;
+        for(let i in msgs){
+          msgs[i].selected = false;
+        }
+      }
+    },
     getMsgType(code){
       for(let type in this.msg_cates){
         if(this.msg_cates[type].code == code){
@@ -195,7 +212,7 @@ export default {
     },
     getMessage(){
       let data = cloneObj(this.request_param);
-      if(this.validity_period[0] == ''){
+      if(!this.validity_period[0]){
         data.start_time = '1900-01-01 00:00:00';
         data.end_time = new Date().format('yyyy-MM-dd hh:mm:ss');
       }
@@ -217,6 +234,7 @@ export default {
           res.list[i].categories = this.getMsgType(res.list[i].categories);
         }
         _self.msg_list = res.list;
+        _self.total = res.total;
       }).catch(err=> {
         let msg = getErrMsg(err);
         _self.$Message.error({
@@ -257,60 +275,11 @@ export default {
         }
       }
       this.msg_list = msgs.slice(0, msgs.length);
+    },
+    turnPage(num){
+      this.request_param.index = --num;
+      this.getMessage();
     }
-    // submitBasicInfo(){
-    //   let data = this.basic_info;
-
-    //   if( !isPhone(data.telephone) ){
-    //     this.$Message.error({
-    //       content: '请输入正确格式的公司电话！',
-    //       duration: 2,
-    //       closable:true
-    //     });
-    //     return;
-    //   }
-    //   else if( !isMobile(data.contacts_mobile) ){
-    //     this.$Message.error({
-    //       content: '请输入正确格式的联系人电话！',
-    //       duration: 2,
-    //       closable:true
-    //     }); 
-    //     return;
-    //   }
-    //   else if( !isEmail(data.contacts_email) ){
-    //     this.$Message.error({
-    //       content: '请输入正确格式的联系人邮箱！',
-    //       duration: 2,
-    //       closable:true
-    //     }); 
-    //     return;
-    //   }
-
-    //   data.edit_user_name = data.user_name;
-    //   let param = {
-    //     sinterface: {
-    //       method: 'POST',
-    //       path: '/v3/settings/account/info/edit'
-    //     },
-    //     data
-    //   }
-    //   let _self = this;
-    //   ajaxCallPromise(param).then(res => {
-    //     _self.getBasicInfo();
-    //     _self.$Message.info({
-    //       content: '提交成功！',
-    //       duration: 2,
-    //       closable: true
-    //     })
-    //   }).catch(err=> {
-    //     let msg = getErrMsg(err);
-    //     _self.$Message.error({
-    //         content: msg,
-    //         duration: 2,
-    //         closable:true
-    //     });        
-    //   });
-    // }
   }
 }
 </script>
@@ -329,7 +298,7 @@ export default {
   margin: 80px 18% 0 18%;
   padding-bottom: 60px;
   /*height: 400px;*/
-  /*position: relative;*/
+  position: relative;
 }
 
 #message-list>#title {
@@ -379,12 +348,7 @@ export default {
   /*color: #000;*/
 }
 
-#message-win>div {
-  width: 100%;
-  border-bottom: 1px solid #ccc;
-  padding: 0 30px;
-}
-#message-win li {
+#message-win>#tool-bar {
   width: 100%;
   border-bottom: 1px solid #ccc;
   padding: 0 30px;
@@ -407,25 +371,40 @@ export default {
   margin-right: 8px;
 }
 #tool-bar>input[type="button"] {
-  background-color: #f3f4f4;
-  color: #838b97;
   border-radius: 3px;
   height: 28px;
   line-height: 26px;
   padding: 0 8px;
-  border: 1px solid #ccc;
   margin-left: 15px;
   cursor: pointer;
 }
-#tool-bar>input[type="button"]:hover {
-  background-color: #fff;
-  color: #4b4f56;
+.mark-enable {
+  background-color: #3a72bf;
+  color: #fff;
+}
+.mark-disabled {
+  background-color: #f3f4f4;
+  color: #838b97;
+  border: 1px solid #ccc;
 }
 
-#message-list #message-win li.message-item {
-  /*padding-bottom: 16px;*/
+#message-win div.replace {
+  width: 100%;
+  padding: 0 30px;
+  font-size: 0;
+  height: 50px;
+  line-height: 50px;
+}
+#message-win div.replace>* {
+  display: inline-block;
+  font-size: 14px;
 }
 
+#message-win li {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  padding: 0 30px;
+}
 #message-list #message-win div.head-line {
   font-size: 0;
   height: 50px;
@@ -467,6 +446,13 @@ export default {
   color: #838b97;
   padding-left: 71px;
   padding-bottom: 16px;
+}
+
+#message-list>#turn-page {
+  position: absolute;
+  bottom: 14px;
+  right: 30px;
+  font-size: 14px;
 }
 
 
